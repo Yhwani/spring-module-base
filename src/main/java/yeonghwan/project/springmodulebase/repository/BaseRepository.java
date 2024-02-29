@@ -8,5 +8,4 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface BaseRepository<E, ID> extends JpaRepository<E, ID> {
     Querydsl getQuerydsl();
 
-
 }

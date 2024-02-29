@@ -1,7 +1,7 @@
 # spring-module-base
 
 ---
-1. 프로젝트에 사용할 **base** 모듈
+1. 모든 프로젝트에 사용할 **base** 모듈
 2. 도메인에 국한하지 않고 service, repository 등에도 사용
 3. 사용 프로젝트 : (wts, 홈페이지) 사용 예정
 ---
@@ -13,10 +13,7 @@
 + **Controller** : DTO와 entity 모두를 고려
 + H2 DB 활용하여 테스트
 ---
-### Goal
-1. DTO, Paging, Mapper 적용
-2. 기반으로 Controller, Service, Repo 수정
-3. Refactoring
+
 
 
 

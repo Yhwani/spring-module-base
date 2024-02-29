@@ -3,6 +3,7 @@ package yeonghwan.project.springmodulebase.service;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import yeonghwan.project.springmodulebase.repository.BaseRepository;
 
@@ -14,6 +15,9 @@ public class BaseServiceImpl<E, ID, RE extends BaseRepository<E,ID>> implements 
     protected final RE repository;
     @Autowired
     protected EntityManager entityManager;
+
+    @Autowired
+    protected ModelMapper modelMapper;
 
     @Override
     public E save(E entity) {

@@ -1,6 +1,7 @@
 package yeonghwan.project.springmodulebase.controller;
 
-import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import yeonghwan.project.springmodulebase.repository.BaseRepository;
 import yeonghwan.project.springmodulebase.service.BaseService;
 
@@ -10,8 +11,12 @@ import yeonghwan.project.springmodulebase.service.BaseService;
  * @param <ID>  entity id
  * @param <S>   BaseService 다형성 위한 인터페이스 타입
  */
-@RequiredArgsConstructor
-public abstract class BaseController<E, ID, S extends BaseService<E, ID, ? extends BaseRepository<E, ID>>>{
-    protected final S service;
+public abstract class BaseController<E, ID, RE, RQ, S extends BaseService<E, ID, ? extends BaseRepository<E, ID>>>{
+    @Autowired
+    protected S service;
+    @Autowired
+    protected ModelMapper mapper;
+    RQ request;
+    RE response;
 
 }
