@@ -1,14 +1,7 @@
-buildscript {
-	ext {
-		queryDslVersion = "5.0.0"
-	}
-}
-
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.3'
 	id 'io.spring.dependency-management' version '1.1.4'
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 bootJar.enabled = false
@@ -29,8 +22,6 @@ repositories {
 	mavenCentral()
 }
 
-apply plugin: "com.ewerk.gradle.plugins.querydsl"
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -50,9 +41,13 @@ dependencies {
 	// Commons-lang3
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
+	// H2
+	runtimeOnly 'com.h2database:h2'
 	// QueryDSL
-	implementation 'com.querydsl:querydsl-jpa'
-	implementation 'com.querydsl:querydsl-apt'
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
 }
 
@@ -68,32 +63,10 @@ tasks.named('jar'){ // jar 설정은 끄기
 	enabled = true
 }
 
-// QueryDSL 설정
-def querydslDir = "$buildDir/generated/querydsl"
-
-querydsl {
-	library = "com.querydsl:querydsl-apt"
-	jpa = true
-	querydslSourcesDir = querydslDir
+def querydslSrcDir = 'src/main/generated'
+clean {
+	delete file(querydslSrcDir)
 }
-
-sourceSets {
-	main {
-		java {
-			srcDirs = ['src/main/java', querydslDir]
-		}
-	}
-}
-
-compileQuerydsl{
-	options.annotationProcessorPath = configurations.querydsl
-}
-
-configurations {
-	querydsl.extendsFrom compileClasspath
-}
-
-compileQuerydsl {
-	if (file(querydslDir).exists())
-		delete(file(querydslDir))
+tasks.withType(JavaCompile) {
+	options.generatedSourceOutputDirectory = file(querydslSrcDir)
 }

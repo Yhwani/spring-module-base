@@ -1,4 +1,4 @@
-package yeonghwan.project.springmodulebase.domain;
+package yeonghwan.project.springmodulebase.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -12,12 +12,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 직렬화를 통한 모듈간의 객체와 데이터 교환 및 사용 -> Base 에서 받아와야 모든 자손들이 사용 가능
  * 조상 클래스로 해당 어노테이션 이용
  */
 @Data
@@ -25,7 +24,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable {
+@EntityListeners(value = AuditingEntityListener.class)
+public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
